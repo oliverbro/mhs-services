@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+    </head>
+    <body>
+        <h1>View Data Mahasiswa</h1>
+        <div id="proses">
+            <input type="radio" name="view" value="all" checked>All
+            <input type="radio" name="view" value="mhs">Mahasiswa
+            <input type="radio" name="view" value="alamat">Alamat
+        </div>
+        <div><input id="nilai" type="text"><button id="filter">Filter</button></div>
+        <div>
+            <table border="1">
+                
+            </table>
+        </div>
+        <script>
+    $(document).ready(function(){
+        $("#filter").click(function() {
+            $('table').empty();
+        met = $('input:radio[name=view]:checked').val();
+        if(met!='all'){
+            value= $("#nilai").val();
+            if(met=='mhs'){
+                data = "method="+met+"&nim= "+value+"";
+            }else if(met=='alamat'){
+                data = "method="+met+"&alamat='"+value+"'";
+        }
+        }else{
+            data = "method=all";
+        }
+        $.ajax({
+            type: "GET",
+            url: "http://localhost/example/service_mhs.php",
+            data:  data,
+            dataType: "xml",
+            success: function(xml) {
+            $(xml).find('mahasiswa').each(function(){
+                var nim = $(this).find('NIM').text();
+                var name = $(this).find('NAMA').text();
+                var alamt = $(this).find('ALAMAT').text();
+                $("table").append("<tr><td>"+nim+"</td><td>"+name+"</td><td>"+alamt+"</td></tr>");
+            });
+            }
+        });
+        });
+    });
+        </script>
+    </body>
+</html>
