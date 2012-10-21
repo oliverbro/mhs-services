@@ -38,6 +38,6 @@ while($result_array = mysql_fetch_assoc($result))
       }
       echo "</".$table.">";
    }
-//close the root element
+//author Brian Oliver
 echo "</".$database.">";
 ?>
